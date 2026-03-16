@@ -1,0 +1,69 @@
+.landing-page {
+  overflow-y: auto;
+  background-color: var(--bg-dark);
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+}
+.nav-links { display: flex; gap: 32px; }
+.nav-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--transition-fast);
+}
+.nav-links a:hover { color: var(--text-main); }
+.nav-actions { display: flex; gap: 12px; align-items: center; }
+.hero { text-align: center; padding: 100px 0 60px; }
+.hero-title {
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 0 auto 40px;
+}
+.btn-lg { padding: 16px 32px; font-size: 1.1rem; border-radius: 8px; }
+.hero-note { font-size: 0.85rem; color: var(--text-muted); margin-top: 16px; }
+.hero-mockup {
+  margin-top: 80px;
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+  background-color: var(--bg-surface);
+}
+.mockup-header {
+  height: 48px;
+  background-color: var(--bg-panel);
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+}
+.mockup-header .dots span {
+  display: inline-block;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background-color: #ef4444;
+  margin-right: 8px;
+}
+.mockup-header .dots span:nth-child(2) { background-color: #f59e0b; }
+.mockup-header .dots span:nth-child(3) { background-color: #10b981; }
+.mockup-title { flex: 1; tex
