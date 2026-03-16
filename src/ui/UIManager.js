@@ -93,13 +93,30 @@ export class UIManager {
         if (yLabel) yLabel.textContent = Math.round(obj.top) + 'px';
     }
 
-    updateAnimationPanel(activeObjects) {
-        if (!activeObjects || activeObjects.length === 0) {
-            this.animEmptyState.style.display = 'block';
-            this.animControls.style.display = 'none';
-        } else {
-            this.animEmptyState.style.display = 'none';
-            this.animControls.style.display = 'block';
+   applyAnimation(obj, type) {
+        if (!obj.animations) obj.animations = [];
+        obj.animations.push({ type, start: 0, duration: 1 });
+        const vars = {
+            duration: 1,
+            ease: 'power2.out',
+            onUpdate: () => this.canvasManager.canvas.requestRenderAll()
+        };
+        if (type === 'fade-in') {
+            obj.set({ opacity: 0 });
+            gsap.to(obj, { ...vars, opacity: 1 });
+        } else if (type === 'slide-in') {
+            const origY = obj.top;
+            obj.set({ opacity: 0, top: origY + 80 });
+            gsap.to(obj, { ...vars, opacity: 1, top: origY });
+        } else if (type === 'scale-in') {
+            const sx = obj.scaleX || 1;
+            const sy = obj.scaleY || 1;
+            obj.set({ scaleX: 0, scaleY: 0, opacity: 0 });
+            gsap.to(obj, { ...vars, scaleX: sx, scaleY: sy, opacity: 1, ease: 'back.out(1.7)' });
+        } else if (type === 'fade-out') {
+            gsap.to(obj, { ...vars, opacity: 0, delay: 3 });
+        } else if (type === 'slide-out') {
+            gsap.to(obj, { ...vars, top: obj.top + 80, opacity: 0, delay: 3 });
         }
     }
 
