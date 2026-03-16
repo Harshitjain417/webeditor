@@ -2,13 +2,11 @@ export class UIManager {
     constructor(canvasManager, timelineManager) {
         this.canvasManager = canvasManager;
         this.timelineManager = timelineManager;
-
         this.toolBtns = document.querySelectorAll('.tool-btn');
         this.layerList = document.getElementById('layer-list');
         this.propertyPanel = document.getElementById('property-panel');
         this.animEmptyState = document.getElementById('anim-empty-state');
         this.animControls = document.getElementById('anim-controls');
-
         this.setupToolbar();
         this.setupEventListeners();
         this.setupAnimationPresets();
@@ -36,7 +34,6 @@ export class UIManager {
             this.updatePropertiesPanel(e.detail.objects);
             this.updateAnimationPanel(e.detail.objects);
         });
-
         document.addEventListener('canvas:update', (e) => {
             this.updateLayersPanel(e.detail.objects);
         });
@@ -47,13 +44,10 @@ export class UIManager {
         if (colorPicker) {
             colorPicker.addEventListener('input', (e) => {
                 const objs = this.canvasManager.canvas.getActiveObjects();
-                objs.forEach(obj => {
-                    obj.set('fill', e.target.value);
-                });
+                objs.forEach(obj => obj.set('fill', e.target.value));
                 this.canvasManager.canvas.requestRenderAll();
             });
         }
-
         const opacityInput = document.getElementById('prop-opacity');
         if (opacityInput) {
             opacityInput.addEventListener('input', (e) => {
@@ -75,16 +69,13 @@ export class UIManager {
             content.style.display = 'none';
             return;
         }
-
         emptyState.style.display = 'none';
         content.style.display = 'block';
-
         const obj = activeObjects[0];
         const colorPicker = document.getElementById('prop-fill');
         if (colorPicker && obj.fill && typeof obj.fill === 'string' && obj.fill.startsWith('#')) {
             colorPicker.value = obj.fill;
         }
-
         const opacityInput = document.getElementById('prop-opacity');
         const opacityLabel = document.getElementById('opacity-label');
         if (opacityInput) {
@@ -92,6 +83,35 @@ export class UIManager {
             opacityInput.value = val;
             if (opacityLabel) opacityLabel.textContent = val + '%';
         }
-
         const wLabel = document.getElementById('prop-w');
-        con
+        const hLabel = document.getElementById('prop-h');
+        if (wLabel) wLabel.textContent = Math.round(obj.getScaledWidth()) + 'px';
+        if (hLabel) hLabel.textContent = Math.round(obj.getScaledHeight()) + 'px';
+        const xLabel = document.getElementById('prop-x');
+        const yLabel = document.getElementById('prop-y');
+        if (xLabel) xLabel.textContent = Math.round(obj.left) + 'px';
+        if (yLabel) yLabel.textContent = Math.round(obj.top) + 'px';
+    }
+
+    updateAnimationPanel(activeObjects) {
+        if (!activeObjects || activeObjects.length === 0) {
+            this.animEmptyState.style.display = 'block';
+            this.animControls.style.display = 'none';
+        } else {
+            this.animEmptyState.style.display = 'none';
+            this.animControls.style.display = 'block';
+        }
+    }
+
+    updateLayersPanel(objects) {
+        this.layerList.innerHTML = '';
+        if (objects.length === 0) {
+            const empty = document.createElement('div');
+            empty.className = 'empty-state';
+            empty.textContent = 'No objects on canvas';
+            this.layerList.appendChild(empty);
+            return;
+        }
+        [...objects].reverse().forEach(obj => {
+            const div = document.createElement('div');
+            div.style.cssText = 'padding:8px 12px;margin-bottom:4px;background:var(--bg-dark);border-radius:4px;font-size:0.8rem;display:flex;justify-content:
